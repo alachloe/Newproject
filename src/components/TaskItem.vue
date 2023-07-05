@@ -41,7 +41,6 @@
   </script>
   
   <style></style>
-  
   <!--
   *Hints*
   1. ref() or reactive() can be used here to store the following, think if you want to store them either individually or
