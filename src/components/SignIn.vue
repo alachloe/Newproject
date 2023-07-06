@@ -1,88 +1,78 @@
 <!-- COMPONENTE BOILERPLATE -->
  
 <template>
+  <div>
+    <h1>Log In to ToDo App </h1>
 
-  <div class="container">
-    <h3 class="header-title">Log In to ToDo App</h3>
-    
-    <form @submit.prevent="signIn" class="form-sign-in">
-      <div class="form">
-        <div class="form-input">
-          <label class="input-field-label">E-mail</label>
-          <input
-            type="email"
-            class="input-field"
-            placeholder="example@gmail.com"
-            id="email"
-            v-model="email"
-            required
-          />
-        </div>
-        <div class="form-input">
-          <label class="input-field-label">Password</label>
-          <input
-            type="password"
-            class="input-field"
-            placeholder="********"
-            id="password"
-            v-model="password"
-            required
-          />
-        </div>
-        <button class="button" type="submit">Sign In</button>
+    <div v-if="errorMsg">
+      <p>{{ errorMsg }}</p>
+    </div>
 
-        
+    <!-- Sign In -->
+    <form @submit.prevent="login">
+      <label>Email</label>
+      <div>
+        <input
+          type="text"
+          v-model="email"
+          id="email"
+          required="required"
+          placeholder="Email"
+          class=""
+        />
       </div>
+      <label>Password</label>
+      <div>
+        <input
+          type="password"
+          v-model="password"
+          id="password"
+          required="required"
+          placeholder="Password"
+          class=""
+        />
+      </div>
+
+      <button type="submit" class="button-dark">Log In</button>
     </form>
 
-    <p>Dont have an account? <PersonalRouter :route="route" :buttonText="buttonText" class="sign-up-link"/></p>
+    <p>
+      Don't have an account?
+      <PersonalRouter :route="route" :buttonText="buttonText" class="sign-up-link" />
+    </p>
   </div>
-
 </template>
 
 <script setup>
 import PersonalRouter from "./PersonalRouter.vue";
 import { useRouter } from "vue-router";
 import { useUserStore } from "../stores/user";
-import { ref, reactive} from "vue"
+import { ref } from "vue";
+
 // Route Variables
 const route = "/auth/signup";
 const buttonText = "Sign Up";
+
 // variables para conectarme al form (login)
-const email = ref("")
-const password = ref("")
+const email = ref("");
+const password = ref("");
+
 // Router to push user once SignedIn to Home
 const redirect = useRouter();
-// const signUp = async () => {
-//   if (password.value === confirmPassword.value) {
-//     try {
-//       // calls the user store and send the users info to backend to logIn
-//       await useUserStore().signUp(email.value, password.value);
-//       // redirects user to the homeView
-//       redirect.push({ path: "/auth/login" });
-//     } catch (error) {
-//       // displays error message
-//       errorMsg.value = error.message;
-//       // hides error message
-//       setTimeout(() => {
-//         errorMsg.value = null;
-//       }, 5000);
-//     }
-//     return;
-//   }
-//   errorMsg.value = "error";
-// };
-// Arrow function to Signin user to supaBase
-const signIn = async () => {
+
+// Arrow function to Sign in user to supaBase
+const login = async () => {
   try {
-    // escribir comectario, tarea para casa.
     await useUserStore().signIn(email.value, password.value);
-     // redirects user to the homeView
+    // Redirects user to the homeView
     redirect.push({ path: "/" });
   } catch (error) {
-    alert(error)
+    alert(error);
   }
 };
+
+// Error message reactive variable
+const errorMsg = ref(null);
 </script>
 
 <style></style>

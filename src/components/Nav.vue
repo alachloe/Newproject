@@ -55,5 +55,12 @@ const signOut = async () => {
     // then redirect user to the homeView
   } catch (error) {}
 };
-
 </script>
+
+<style scoped>
+nav {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+}
+</style>
