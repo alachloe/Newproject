@@ -3,35 +3,44 @@ import { defineStore } from "pinia";
 import { supabase } from "../supabase";
 import { useUserStore } from "./user";
 
-export const useTaskStore = defineStore("tasks", () => {
-  // Esta tienda utiliza el Composition API
-  const tasksArr = ref(null);
-  // conesguir tareas de supabase
-  const fetchTasks = async () => {
-    const { data: tasks } = await supabase
-      .from("tasks")
-      .select("*")
-      .order("id", { ascending: false });
-    tasksArr.value = tasks;
-    return tasksArr.value;
-  };
-  // añadir tareas de supabase
-  const addTask = async (title, description) => {
-    console.log(useUserStore().user.id);
-    const { data, error } = await supabase.from("tasks").insert([
-      {
-        user_id: useUserStore().user.id,
-        title: title,
-        is_complete: false,
-        description: description,
-      },
-    ]);
-  };
-  // borrar tareas de supabase
-  const deleteTask = async (id) => {
-    const { data, error } = await supabase.from("tasks").delete().match({
-      id: id,
-    });
-  };
-  return { tasksArr, fetchTasks, addTask, deleteTask };
+export const useTaskStore = defineStore('tasks', {
+  state: () => ({
+    tasks: null
+  }),
+  actions: {
+    async fetchTasks () {
+      const { data: tasks } = await supabase
+        .from('tasks')
+        .select('*')
+        .order('id', { ascending: false });
+      this.tasks = tasks;
+    },
+    async createTask (title, user_id) {
+      await supabase
+        .from('tasks')
+        .insert([{ title: title, is_complete: false, user_id: user_id }]);
+      this.fetchTasks();
+    },
+    async editTask (taskId, editedTask) {
+      await supabase
+        .from('tasks')
+        .update({ title: editedTask })
+        .match({ id: taskId });
+      this.fetchTasks();
+    },
+    async changeStatus (taskId, status) {
+      await supabase
+        .from('tasks')
+        .update({ is_complete: status.complete })
+        .match({ id: taskId });
+      this.fetchTasks();
+    },
+    async deleteTask (taskId) {
+      await supabase
+        .from('tasks')
+        .delete()
+        .match({ id: taskId });
+      this.fetchTasks();
+    }
+  }
 });

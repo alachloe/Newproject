@@ -88,3 +88,19 @@ h6 {
   background-color: white;
   color: black;
 }
+
+.button-red {
+  background-color: #8b0000;
+  color: white;
+  padding: 10px 25px;
+  border-radius: 30px;
+  border: 1px solid #8b0000;
+}
+
+.mt-20 {
+  margin-top: 20px;
+}
+
+.white {
+  color: white;
+}

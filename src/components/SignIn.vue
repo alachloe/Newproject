@@ -1,78 +1,54 @@
-<!-- COMPONENTE BOILERPLATE -->
- 
 <template>
-  <div>
-    <h1>Log In to ToDo App </h1>
-
-    <div v-if="errorMsg">
-      <p>{{ errorMsg }}</p>
+  <article class="auth-article card">
+    <div v-if="errorMsg" class="error">
+      {{ errorMsg }}
     </div>
-
-    <!-- Sign In -->
-    <form @submit.prevent="login">
-      <label>Email</label>
-      <div>
+    <form class="register flex-column" @submit.prevent="signIn">
+      <h3 class="mb-10">Sign In</h3>
+      <div class="w-100 flex-column">
         <input
-          type="text"
           v-model="email"
-          id="email"
-          required="required"
+          class="form-input"
+          type="email"
+          name="email"
+          required
           placeholder="Email"
-          class=""
-        />
-      </div>
-      <label>Password</label>
-      <div>
+        /><br />
         <input
-          type="password"
           v-model="password"
-          id="password"
-          required="required"
+          class="form-input"
+          type="password"
+          name="password"
+          required
           placeholder="Password"
-          class=""
-        />
+        /><br />
+        <button type="submit" class="button-dark">Log In</button>
       </div>
-
-      <button type="submit" class="button-dark">Log In</button>
     </form>
-
-    <p>
-      Don't have an account?
-      <PersonalRouter :route="route" :buttonText="buttonText" class="sign-up-link" />
-    </p>
-  </div>
+  </article>
 </template>
 
 <script setup>
-import PersonalRouter from "./PersonalRouter.vue";
-import { useRouter } from "vue-router";
-import { useUserStore } from "../stores/user";
-import { ref } from "vue";
+import { useRouter } from 'vue-router';
+import { useUserStore } from '../stores/user';
+import { ref } from 'vue';
 
-// Route Variables
-const route = "/auth/signup";
-const buttonText = "Sign Up";
-
-// variables para conectarme al form (login)
-const email = ref("");
-const password = ref("");
-
-// Router to push user once SignedIn to Home
-const redirect = useRouter();
-
-// Arrow function to Sign in user to supaBase
-const login = async () => {
-  try {
-    await useUserStore().signIn(email.value, password.value);
-    // Redirects user to the homeView
-    redirect.push({ path: "/" });
-  } catch (error) {
-    alert(error);
-  }
-};
-
-// Error message reactive variable
+const router = useRouter();
+const email = ref('');
+const password = ref('');
 const errorMsg = ref(null);
-</script>
+const userStore = useUserStore();
 
-<style></style>
+async function signIn() {
+  if (password.value && email.value) {
+    try {
+      await userStore.signIn(email.value, password.value);
+      router.push('/');
+    } catch (e) {
+      errorMsg.value = e.message;
+    }
+  } else {
+    errorMsg.value = 'Please enter valid login details';
+  }
+}
+</script>
