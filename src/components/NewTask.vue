@@ -1,56 +1,66 @@
 <template>
-    <h1>Add a new Task</h1>
-    <div v-if="showErrorMessage">
-        <p class="error-text">{{ errorMessage }}</p>
-    </div>
     <div>
-        <div class="input-field">
-            <input type="text" placeholder="Add a Task Title - Listen to Kendrick Lamar" v-model="name">
-        </div>
-        <div class="input-field">
-            <input type="text" placeholder="Add a Task Description - Look up Kendrick Lamar's FEAR album on spotify and listen to the whole album." v-model="description">
-        </div>
-        <button @click="addTask" class="button">Add</button>
+      <form @submit.prevent="addTask">
+        <input v-model="newTask" />
+        <button>Add New Task</button>
+      </form>
+  
+      <button @click="createTask">Register Task</button>
+  
+      <div v-for="task in filteredTasks" :key="task.id">
+        <input type="checkbox" v-model="task.done" />
+        <span :class="{ done: task.done }">{{ task.text }}</span>
+        <button @click="removeTask(task)">Delete</button>
+      </div>
+  
+      <button @click="hideCompleted = !hideCompleted">
+        {{ hideCompleted ? 'Show all tasks' : 'Hide completed' }}
+      </button>
+  
+      <button @click="logout">Log Out</button>
     </div>
-</template>
-
-<script setup>
-import { ref } from "vue";
-import { useTaskStore } from "../stores/task"   
-
-const taskStore = useTaskStore();
-
-// variables para los valors de los inputs
-const name = ref('');
-const description = ref('');
-
-// constant to save a variable that holds an initial false boolean value for the errorMessage container that is conditionally displayed depending if the input field is empty
-const showErrorMessage = ref(false);
-
-// const constant to save a variable that holds the value of the error message
-const errorMessage = ref(null);
-
-// Arrow function para crear tareas.
-const addTask = () => {
-if(name.value.length === 0 || description.value.length === 0){
-    // Primero comprobamos que ningún campo del input esté vacío y lanzamos el error con un timeout para informar al user.
-
-    showErrorMessage.value = true;
-    errorMessage.value = 'The task title or description is empty';
-    setTimeout(() => {
-    showErrorMessage.value = false;
-    }, 5000);
-
-} else {
-    // Aquí mandamos los valores a la store para crear la nueva Task. Esta parte de la función tenéis que refactorizarla para que funcione con emit y el addTask del store se llame desde Home.vue.
-
-    taskStore.addTask(name.value, description.value);
-    name.value = '';
-    description.value = '';
-}
-};
-
-</script>
-
-<style></style>
+  </template>
+  
+  <script setup>
+  import { ref, computed } from 'vue';
+  import { useRouter } from 'vue-router';
+  import { supabase } from '../supabase';
+  import { useTaskStore } from '../stores/task';
+  
+  const taskStore = useTaskStore();
+  
+  let id = 0;
+  const newTask = ref('');
+  
+  const hideCompleted = ref(false);
+  
+  const tasks = ref([]);
+  const filteredTasks = computed(() =>
+    hideCompleted.value ? tasks.value.filter((t) => !t.done) : tasks.value
+  );
+  
+  function addTask() {
+    tasks.value.push({
+      id: id++,
+      text: newTask.value,
+      done: false
+    });
+  
+    newTask.value = '';
+  }
+  
+  function removeTask(task) {
+    const index = tasks.value.indexOf(task);
+    if (index !== -1) {
+      tasks.value.splice(index, 1);
+    }
+  }
+  
+  const router = useRouter();
+  
+  async function logout() {
+    const { error } = await supabase.auth.signOut();
+    router.push('/auth');
+  }
+  </script>
   

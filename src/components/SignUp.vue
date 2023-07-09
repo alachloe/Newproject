@@ -1,6 +1,5 @@
 <template>
   <div class="container">
-
     <div class="header">
       <div class="header-description">
         <h3 class="header-title">Register to ToDo App</h3>
@@ -43,7 +42,7 @@
             required
           />
         </div>
-        <button type="submit" class="button-dark">Register</button>
+        <button class="button" type="submit">Sign Up</button>
         <p>
           Have an account?
           <PersonalRouter
@@ -55,7 +54,7 @@
       </div>
     </form>
 
-    <div v-show="errorMsg">{{errorMsg}}</div>
+    <div v-show="errorMsg">{{ errorMsg }}</div>
   </div>
 </template>
 
@@ -95,7 +94,7 @@ const signUp = async () => {
       errorMsg.value = error.message;
       // hides error message
       setTimeout(() => {
-        errorMsg.value = null;
+        errorMsg.value = "";
       }, 5000);
     }
     return;
