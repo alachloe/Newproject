@@ -20,9 +20,6 @@
         <li class="log-out-welcome">
           <p>Welcome, user</p>
         </li>
-        <li>
-          <button @click="signOut" class="button">Log out</button>
-        </li>
       </ul>
     </div>
   </nav>

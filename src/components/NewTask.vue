@@ -5,8 +5,6 @@
         <button>Add New Task</button>
       </form>
   
-      <button @click="createTask">Register Task</button>
-  
       <div v-for="task in filteredTasks" :key="task.id">
         <input type="checkbox" v-model="task.done" />
         <span :class="{ done: task.done }">{{ task.text }}</span>
