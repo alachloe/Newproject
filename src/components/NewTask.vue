@@ -1,10 +1,11 @@
 <template>
     <div>
-      <form @submit.prevent="addTask">
+    <h2 class="header-title">Add a new Task</h2>
+    <form @submit.prevent="addTask">
         <input v-model="newTask" />
         <button>Add New Task</button>
-      </form>
-  
+        </form>
+
       <div v-for="task in filteredTasks" :key="task.id">
         <input type="checkbox" v-model="task.done" />
         <span :class="{ done: task.done }">{{ task.text }}</span>
@@ -14,9 +15,7 @@
       <button @click="hideCompleted = !hideCompleted">
         {{ hideCompleted ? 'Show all tasks' : 'Hide completed' }}
       </button>
-  
-      <button @click="logout">Log Out</button>
-    </div>
+      </div>
   </template>
   
   <script setup>
@@ -61,4 +60,20 @@
     router.push('/auth');
   }
   </script>
+
+.header-title{
+    color:gold;
+    text-align: center;
+    font-size: 55px;
+    font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif
+  }
   
+  .button {
+    margin-left: 10px;
+    width:280px;
+    background-color:#a504b7;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
