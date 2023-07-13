@@ -104,7 +104,6 @@ p {
 
 
 .background{
-  background-image: url("../Imagenes/background.jpeg");
   height: 100vh;
   width: 100%;
   text-align: center;

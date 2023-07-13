@@ -89,35 +89,4 @@
   });
   </script>
   
-  const userStore = useUserStore();
-  const inputUpdate = ref(false);
-  const editToggleProfile = () => {
-    inputUpdate.value = !inputUpdate.value;
-  };
-  const profile = computed(() => (userStore.profile ? userStore.profile : {}));
-  const updateProfile = async () => {
-    const updatedProfileData = {
-      full_name: profile.value.full_name,
-      bio: profile.value.bio,
-      location: profile.value.location,
-      website: profile.value.website,
-    };
-    console.log(updatedProfileData);
-    const { data, error } = await supabase
-      .from("profiles")
-      .update(updatedProfileData)
-      .eq("user_id", supabase.auth.user().id);
-       editToggleProfile();
-    if (error) {
-      console.error(error);
-    } else {
-      console.log("Perfil actualizado correctamente");
-      emit('updateProfileEmit', updatedProfileData)
-  
-    }
-  };
-  onMounted(async () => {
-    await userStore.fetchUser();
-  });
-  </script>
-    
+  <style scoped></style>
