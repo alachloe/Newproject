@@ -146,7 +146,6 @@ p {
   text-align: center;
   margin-bottom: 10px;
   font-size: 18px;
-  font-family: Copperplate, Copperplate Gothic Light, fantasy;
 }
 
 .form-sign-in {
