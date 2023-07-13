@@ -1,21 +1,10 @@
-<template>
-    <div>
-    <NewTaskVue />
-  </div>
-  </template>
+<script>
   
-  
-  <script>
-  
-  import NewTaskVue from "./NewTask.vue"
-  
-  export default {
-  components: {
-  NewTaskVue
-  }
-  }
-  </script>
-  
-  <style>
-  
-  </style>
+import NewTaskVue from "./NewTask.vue"
+
+export default {
+components: {
+NewTaskVue
+}
+}
+</script>
