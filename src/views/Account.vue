@@ -1,9 +1,9 @@
 <template>
   <Nav />
+  <h1>Website: <a target="_blank" :href="website">{{ website }}</a></h1>
   <h1>Name: {{ username }}</h1>
-  <h1>Age: {{ Age }}</h1>
-  <h1>Biography: {{ bio }}</h1>
-  <h1>City: {{ city }}</h1>
+  <h1>Biography: {{ Biograhy }}</h1>
+  <h1>Location: {{ Location }}</h1>
   <img :src="avatar_url" v-if="avatar_url" alt="Profile picture" />
   <input @change="fileManager" type="file" />
   <button @click="uploadFile">Upload File</button>
